@@ -5,11 +5,15 @@ import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 
 @Injectable()
-export class UsersRepository {
+export class UsersRepository extends Repository<User> {
   constructor(
     @InjectRepository(User)
-    public repository: Repository<User>,
-  ) {}
+    private readonly usersRepository: Repository<User>,
+  ) {
+    super(
+      usersRepository.target,
+      usersRepository.manager,
+      usersRepository.queryRunner,
+    );
+  }
 }
-
-export type UsersRepositoryType = Repository<User>;
