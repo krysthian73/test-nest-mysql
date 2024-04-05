@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersRepository } from './repositories/users.repository';
+import { UserFilter } from './types';
 
 @Injectable()
 export class UsersService {
@@ -13,12 +14,12 @@ export class UsersService {
     return await this.usersRepository.save(createUserDto);
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.usersRepository.find();
+  async findAll(query?: UserFilter): Promise<User[]> {
+    return await this.usersRepository.findBy(query);
   }
 
-  async findOne(id: number): Promise<User | null> {
-    return await this.usersRepository.findOneBy({ id });
+  async findOne(query: UserFilter): Promise<User | null> {
+    return await this.usersRepository.findOneBy(query);
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
