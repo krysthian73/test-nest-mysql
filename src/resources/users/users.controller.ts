@@ -13,7 +13,7 @@ import { ApiBearerAuth, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserFullDto } from './dto/user-full.dto';
-import { AuthGuard } from '../auth.guard';
+import { AuthOwnerAdminGuard } from '../auth-owner-admin.guard';
 import { ResultType } from '../types';
 
 @ApiTags('users')
@@ -22,7 +22,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthOwnerAdminGuard)
   @ApiBearerAuth()
   @ApiResponse({
     description: 'Users found successfully',
@@ -44,7 +44,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthOwnerAdminGuard)
   @ApiBearerAuth()
   @ApiResponse({
     description: 'User found successfully',
@@ -71,7 +71,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthOwnerAdminGuard)
   @ApiBearerAuth()
   @ApiResponse({
     description: 'User updated successfully',
@@ -106,7 +106,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthOwnerAdminGuard)
   @ApiBearerAuth()
   @ApiResponse({
     description: 'User deleted successfully',
