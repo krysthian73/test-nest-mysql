@@ -30,4 +30,8 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     await this.usersRepository.delete(id);
   }
+
+  async checkIfUserExists(id: number): Promise<boolean> {
+    return await this.usersRepository.checkIfUserExists({ id });
+  }
 }

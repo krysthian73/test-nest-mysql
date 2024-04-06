@@ -7,10 +7,15 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { ResultType } from './types';
+import { UsersService } from './users/users.service';
+import { parse } from 'path';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private readonly usersService: UsersService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -27,6 +32,16 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_ACCESS_SECRET,
       });
       request['userId'] = payload['userId'];
+      const userExists = await this.usersService.checkIfUserExists(
+        parseInt(payload['userId']),
+      );
+      if (!userExists) {
+        throw new ResultType(
+          HttpStatus.UNAUTHORIZED,
+          ['User not found'],
+          'Unauthorized',
+        );
+      }
     } catch {
       throw new ResultType(
         HttpStatus.UNAUTHORIZED,
