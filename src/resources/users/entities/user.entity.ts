@@ -13,4 +13,7 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({ type: 'enum', enum: ['user', 'admin'], default: 'user' })
+  role: string;
 }

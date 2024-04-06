@@ -4,3 +4,8 @@ export type UserFilter = {
   email?: string;
   password?: string;
 };
+
+export enum Role {
+  User = 'user',
+  Admin = 'admin',
+}

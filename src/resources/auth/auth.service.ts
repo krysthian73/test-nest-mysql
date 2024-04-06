@@ -26,7 +26,7 @@ export class AuthService {
       throw new ResultType(401, [], 'Unauthorized');
     }
 
-    const payload = { userId: user.id };
+    const payload = { userId: user.id, role: user.role };
 
     return {
       user,
@@ -43,7 +43,7 @@ export class AuthService {
       name,
     });
 
-    const payload = { userId: user.id };
+    const payload = { userId: user.id, role: user.role };
 
     return {
       user,
