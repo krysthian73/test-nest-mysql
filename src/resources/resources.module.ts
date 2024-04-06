@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
 import { JwtService } from '@nestjs/jwt';
-import { RouterModule } from '@nestjs/core';
-import { routes } from './routes';
+
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [UsersModule, RouterModule.register(routes)],
+  imports: [AuthModule, UsersModule],
   controllers: [],
   providers: [JwtService],
   exports: [],
