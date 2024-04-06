@@ -10,7 +10,7 @@ import { UserFilter } from './types';
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     return await this.usersRepository.save(createUserDto);
   }
 
