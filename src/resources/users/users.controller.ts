@@ -7,7 +7,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '../auth.guard';
@@ -20,7 +20,6 @@ export class UsersController {
   @Get()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  @ApiSecurity('basic')
   findAll() {
     return this.usersService.findAll();
   }
