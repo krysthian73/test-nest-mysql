@@ -15,7 +15,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(signinDto: SigninDto): Promise<ResultType<AuthResultDto>> {
+  async signIn(signinDto: SigninDto): Promise<AuthResultDto> {
     const { email, password } = signinDto;
     const user = await this.usersService.findOne({ email });
     const passwordValidation = await bcrypt.compare(
@@ -29,15 +29,12 @@ export class AuthService {
     const payload = { userId: user.id };
 
     return {
-      data: {
-        user,
-        access_token: await this.jwtService.signAsync(payload),
-      },
-      statusCode: 200,
+      user,
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 
-  async signup(signupDto: SignupDto): Promise<ResultType<AuthResultDto>> {
+  async signup(signupDto: SignupDto): Promise<AuthResultDto> {
     const { email, password, name } = signupDto;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await this.usersService.create({
@@ -49,11 +46,8 @@ export class AuthService {
     const payload = { userId: user.id };
 
     return {
-      data: {
-        user,
-        access_token: await this.jwtService.signAsync(payload),
-      },
-      statusCode: 201,
+      user,
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 }

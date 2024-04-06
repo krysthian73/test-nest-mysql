@@ -1,5 +1,5 @@
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiBody, ApiResponse, } from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SigninDto } from './dto/signin.dto';
 import { AuthResultDto } from './dto/auth-result.dto';
@@ -29,8 +29,14 @@ export class AuthController {
   })
   @Post('signin')
   @HttpCode(HttpStatus.OK)
-  signin(@Body() signinDto: SigninDto): Promise<ResultType<AuthResultDto>> {
-    return this.authService.signIn(signinDto);
+  async signin(
+    @Body() signinDto: SigninDto,
+  ): Promise<ResultType<AuthResultDto>> {
+    const authResultDto = await this.authService.signIn(signinDto);
+    return {
+      statusCode: HttpStatus.OK,
+      data: authResultDto,
+    };
   }
 
   @ApiBody({ type: SignupDto })
@@ -46,7 +52,13 @@ export class AuthController {
   })
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  signup(@Body() signupDto: SignupDto): Promise<ResultType<AuthResultDto>> {
-    return this.authService.signup(signupDto);
+  async signup(
+    @Body() signupDto: SignupDto,
+  ): Promise<ResultType<AuthResultDto>> {
+    const authResultDto = await this.authService.signup(signupDto);
+    return {
+      statusCode: HttpStatus.CREATED,
+      data: authResultDto,
+    };
   }
 }
