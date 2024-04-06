@@ -6,7 +6,7 @@ import { UsersService } from '../users/users.service';
 import { SigninDto } from './dto/signin.dto';
 import { AuthResultDto } from './dto/auth-result.dto';
 import { SignupDto } from './dto/signup-dto';
-import { ResultError, ResultSuccess } from '../types';
+import { ResultType } from '../types';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(signinDto: SigninDto): Promise<ResultSuccess<AuthResultDto>> {
+  async signIn(signinDto: SigninDto): Promise<ResultType<AuthResultDto>> {
     const { email, password } = signinDto;
     const user = await this.usersService.findOne({ email });
     const passwordValidation = await bcrypt.compare(
@@ -23,7 +23,7 @@ export class AuthService {
       user?.password ?? '',
     );
     if (!user?.password || !passwordValidation) {
-      throw new ResultError([], 401, 'Unauthorized');
+      throw new ResultType(401, [], 'Unauthorized');
     }
 
     const payload = { userId: user.id };
@@ -37,7 +37,7 @@ export class AuthService {
     };
   }
 
-  async signup(signupDto: SignupDto): Promise<ResultSuccess<AuthResultDto>> {
+  async signup(signupDto: SignupDto): Promise<ResultType<AuthResultDto>> {
     const { email, password, name } = signupDto;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await this.usersService.create({

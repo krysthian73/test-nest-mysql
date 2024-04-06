@@ -1,31 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ResultError {
-  constructor(message: Array<string>, statusCode: number, error: string) {
-    this.message = message;
+export class ResultType<T> {
+  constructor(
+    statusCode: number,
+    message?: Array<string>,
+    error?: string,
+    data?: T | Array<T>,
+  ) {
     this.statusCode = statusCode;
+    this.data = data;
+    this.message = message;
     this.error = error;
   }
 
   @ApiProperty()
-  message: Array<string>;
-
-  @ApiProperty()
   statusCode: number;
 
   @ApiProperty()
-  error: string;
-}
-
-export class ResultSuccess<T> {
-  constructor(data: T, statusCode: number) {
-    this.data = data;
-    this.statusCode = statusCode;
-  }
+  data?: T | Array<T>;
 
   @ApiProperty()
-  data: T;
+  message?: Array<string>;
 
   @ApiProperty()
-  statusCode: number;
+  error?: string;
 }

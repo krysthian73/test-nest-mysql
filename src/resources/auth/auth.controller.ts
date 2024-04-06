@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { SigninDto } from './dto/signin.dto';
 import { AuthResultDto } from './dto/auth-result.dto';
 import { SignupDto } from './dto/signup-dto';
-import { ResultError, ResultSuccess } from '../types';
+import { ResultType } from '../types';
 
 @ApiTags('auth')
 @Controller('api/v1/auth')
@@ -15,20 +15,20 @@ export class AuthController {
   @ApiResponse({
     description: 'Method to log user in',
     status: 200,
-    type: ResultSuccess<AuthResultDto>,
+    type: ResultType<AuthResultDto>,
   })
   @ApiResponse({
     description: 'Bad request',
     status: 400,
-    type: ResultError,
+    type: ResultType,
   })
   @ApiResponse({
     description: 'Unauthorized',
     status: 401,
-    type: ResultError,
+    type: ResultType,
   })
   @Post('signin')
-  signin(@Body() signinDto: SigninDto) {
+  signin(@Body() signinDto: SigninDto): Promise<ResultType<AuthResultDto>> {
     return this.authService.signIn(signinDto);
   }
 
@@ -36,15 +36,15 @@ export class AuthController {
   @ApiResponse({
     description: 'Method to sign user up',
     status: 201,
-    type: ResultSuccess<AuthResultDto>,
+    type: ResultType<AuthResultDto>,
   })
   @ApiResponse({
     description: 'Bad request',
     status: 400,
-    type: ResultError,
+    type: ResultType,
   })
   @Post('signup')
-  signup(@Body() signupDto: SignupDto) {
+  signup(@Body() signupDto: SignupDto): Promise<ResultType<AuthResultDto>> {
     return this.authService.signup(signupDto);
   }
 }
