@@ -6,11 +6,15 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserFullDto } from './dto/user-full.dto';
 import { AuthGuard } from '../auth.guard';
+import { ResultType } from '../types';
 
 @ApiTags('users')
 @Controller('api/v1/users')
@@ -20,28 +24,108 @@ export class UsersController {
   @Get()
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  findAll() {
-    return this.usersService.findAll();
+  @ApiResponse({
+    description: 'Users found successfully',
+    status: HttpStatus.OK,
+    type: ResultType<UserFullDto[]>,
+  })
+  @ApiResponse({
+    description: 'Unauthorized',
+    status: HttpStatus.UNAUTHORIZED,
+    type: ResultType,
+  })
+  @HttpCode(HttpStatus.OK)
+  async findAll(): Promise<ResultType<UserFullDto[]>> {
+    const users = await this.usersService.findAll();
+    const usersFullDto: UserFullDto[] = users.map(
+      (user) => new UserFullDto(user),
+    );
+    return new ResultType<UserFullDto[]>(HttpStatus.OK, [], '', usersFullDto);
   }
 
   @Get(':id')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne({ id: +id });
+  @ApiResponse({
+    description: 'User found successfully',
+    status: HttpStatus.OK,
+    type: ResultType<UserFullDto>,
+  })
+  @ApiResponse({
+    description: 'User not found',
+    status: HttpStatus.NOT_FOUND,
+    type: ResultType,
+  })
+  @ApiResponse({
+    description: 'Unauthorized',
+    status: HttpStatus.UNAUTHORIZED,
+    type: ResultType,
+  })
+  @HttpCode(HttpStatus.OK)
+  async findOne(@Param('id') id: string): Promise<ResultType<UserFullDto>> {
+    const user = await this.usersService.findOne({ id: +id });
+    if (!user) {
+      return new ResultType(HttpStatus.NOT_FOUND, [], 'User not found');
+    }
+    return new ResultType(HttpStatus.OK, [], '', new UserFullDto(user));
   }
 
   @Patch(':id')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @ApiResponse({
+    description: 'User updated successfully',
+    status: HttpStatus.OK,
+    type: ResultType<UserFullDto[]>,
+  })
+  @ApiResponse({
+    description: 'Bad request',
+    status: HttpStatus.BAD_REQUEST,
+    type: ResultType,
+  })
+  @ApiResponse({
+    description: 'User not found',
+    status: HttpStatus.NOT_FOUND,
+    type: ResultType,
+  })
+  @ApiResponse({
+    description: 'Unauthorized',
+    status: HttpStatus.UNAUTHORIZED,
+    type: ResultType,
+  })
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<ResultType<UserFullDto>> {
+    const user = await this.usersService.update(+id, updateUserDto);
+    if (!user) {
+      return new ResultType(HttpStatus.NOT_FOUND, [], 'User not found');
+    }
+    return new ResultType(HttpStatus.OK, [], '', new UserFullDto(user));
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @ApiResponse({
+    description: 'User deleted successfully',
+    status: HttpStatus.OK,
+    type: ResultType,
+  })
+  @ApiResponse({
+    description: 'User not found',
+    status: HttpStatus.NOT_FOUND,
+    type: ResultType,
+  })
+  @ApiResponse({
+    description: 'Unauthorized',
+    status: HttpStatus.UNAUTHORIZED,
+    type: ResultType,
+  })
+  @HttpCode(HttpStatus.OK)
+  async remove(@Param('id') id: string): Promise<ResultType<null>> {
+    await this.usersService.remove(+id);
+    return new ResultType(HttpStatus.OK, [], 'User deleted successfully');
   }
 }
