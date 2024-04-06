@@ -1,5 +1,5 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { ApiTags, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { Controller, Post, Body, HttpCode } from '@nestjs/common';
+import { ApiTags, ApiBody, ApiResponse, } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SigninDto } from './dto/signin.dto';
 import { AuthResultDto } from './dto/auth-result.dto';
@@ -13,7 +13,7 @@ export class AuthController {
 
   @ApiBody({ type: SigninDto })
   @ApiResponse({
-    description: 'Method to log user in',
+    description: 'User logged in successfully',
     status: 200,
     type: ResultType<AuthResultDto>,
   })
@@ -28,6 +28,7 @@ export class AuthController {
     type: ResultType,
   })
   @Post('signin')
+  @HttpCode(200)
   signin(@Body() signinDto: SigninDto): Promise<ResultType<AuthResultDto>> {
     return this.authService.signIn(signinDto);
   }
@@ -44,6 +45,7 @@ export class AuthController {
     type: ResultType,
   })
   @Post('signup')
+  @HttpCode(201)
   signup(@Body() signupDto: SignupDto): Promise<ResultType<AuthResultDto>> {
     return this.authService.signup(signupDto);
   }
