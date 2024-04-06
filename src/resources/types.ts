@@ -25,3 +25,8 @@ export class ResultType<T> {
   @ApiProperty()
   error?: string;
 }
+
+export class EntityDto {
+  @ApiProperty()
+  id: number;
+}
