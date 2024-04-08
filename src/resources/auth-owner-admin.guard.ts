@@ -32,6 +32,7 @@ export class AuthOwnerAdminGuard implements CanActivate {
         secret: process.env.JWT_ACCESS_SECRET,
       });
       request['userId'] = payload['userId'];
+      request['userRole'] = payload['role'];
       const userExists = await this.usersService.checkIfUserExists({
         id: parseInt(payload['userId']),
       });
