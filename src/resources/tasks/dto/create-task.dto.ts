@@ -12,13 +12,4 @@ export class CreateTaskDto {
   @IsNotEmpty()
   @IsString()
   description: string;
-
-  @ApiProperty({ enum: TaskStatus, default: TaskStatus.PENDING })
-  @IsEnum(TaskStatus)
-  status: TaskStatus;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsDate()
-  createdAt: Date;
 }
