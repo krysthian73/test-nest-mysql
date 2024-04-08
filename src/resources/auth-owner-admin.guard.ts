@@ -44,7 +44,9 @@ export class AuthOwnerAdminGuard implements CanActivate {
         );
       } else if (
         payload['role'] !== Role.Admin &&
-        +request.params.id !== +payload['userId']
+        ((+request.params.id !== +payload['userId'] && !!request.params.id) ||
+          (+request.params.userId !== +payload['userId'] &&
+            !!request.params.userId))
       ) {
         throw new ResultType(
           HttpStatus.UNAUTHORIZED,
