@@ -13,7 +13,7 @@ export class UpdateTaskDto {
   @IsString()
   description: string;
 
-  @ApiProperty({ enum: TaskStatus, default: TaskStatus.PENDING })
+  @ApiProperty({ enum: TaskStatus, default: TaskStatus.Pending })
   @IsEnum(TaskStatus)
   status: TaskStatus;
 }
