@@ -29,6 +29,10 @@ class UsersServiceMock {
       password: await bcrypt.hash(createUserDto.password, 10),
     };
   }
+
+  async checkIfUserExists(query): Promise<boolean> {
+    return query.email === 'test@example.com';
+  }
 }
 
 class JwtServiceMock {
