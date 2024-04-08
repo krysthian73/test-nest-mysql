@@ -30,7 +30,7 @@ Antes de iniciar, certifique-se de ter os seguintes pré-requisitos instalados:
 ## Configuração do Projeto
 
 1. Clone este repositório:
-`git clone https://github.com/seu-usuario/todo-list.git`
+`git clone https://github.com/fullstacks-tech-org/test-nest-mysql`
 
 2. Acesse o diretório do projeto:
 `cd test-nest-mysql`
