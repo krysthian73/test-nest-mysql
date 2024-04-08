@@ -19,5 +19,5 @@ export class User {
   role: string;
 
   @OneToMany(() => Task, (task) => task.user)
-  tasks: Task[];
+  tasks?: Task[];
 }
