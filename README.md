@@ -11,29 +11,29 @@ Antes de iniciar, certifique-se de ter os seguintes pré-requisitos instalados:
 ## Configuração do Banco de Dados MySQL
 
 1. Execute o seguinte comando para baixar a imagem do MySQL: 
-docker pull mysql
+`docker pull mysql`
 
 2. Execute o container do MySQL com os seguintes comandos:
-docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 -d mysql
+`docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 -d mysql`
 
 3. Acesse o console do MySQL com o seguinte comando:
-docker exec -it some-mysql mysql -uroot -p
+`docker exec -it some-mysql mysql -uroot -p`
 
 4. Digite a senha quando solicitado (no exemplo, a senha é `my-secret-pw`).
 
 5. Crie um banco de dados com o seguinte comando no console do MySQL:
-CREATE DATABASE todolist;
+`CREATE DATABASE todolist;`
 
 6. Saia do console do MySQL:
-exit;
+`exit;`
 
 ## Configuração do Projeto
 
 1. Clone este repositório:
-git clone https://github.com/seu-usuario/todo-list.git
+`git clone https://github.com/seu-usuario/todo-list.git`
 
 2. Acesse o diretório do projeto:
-cd test-nest-mysql
+`cd test-nest-mysql`
 
 3. Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis de ambiente:
 DATABASE_HOST=127.0.0.1
@@ -53,19 +53,19 @@ THROTTLE_TTL_LONG=86400
 ## Instalação das Dependências
 
 1. Instale as dependências do projeto com o seguinte comando:
-npm install
+`npm install`
 
 ## Execução do Projeto
 
 1. Para iniciar o servidor de desenvolvimento, execute o seguinte comando:
-npm run start:dev
+`npm run start:dev`
 
 O servidor estará disponível em [http://localhost:3000](http://localhost:3000).
 
 ## Testes de Unidade
 
 1. Para executar os testes de unidade, utilize o seguinte comando:
-npm test
+`npm test`
 
 ## Documentação dos Endpoints
 
