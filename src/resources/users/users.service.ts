@@ -31,7 +31,7 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
-  async checkIfUserExists(id: number): Promise<boolean> {
-    return await this.usersRepository.checkIfUserExists({ id });
+  async checkIfUserExists(query: UserFilter): Promise<boolean> {
+    return await this.usersRepository.checkIfUserExists(query);
   }
 }

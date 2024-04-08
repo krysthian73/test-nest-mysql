@@ -32,9 +32,9 @@ export class AuthOwnerAdminGuard implements CanActivate {
         secret: process.env.JWT_ACCESS_SECRET,
       });
       request['userId'] = payload['userId'];
-      const userExists = await this.usersService.checkIfUserExists(
-        parseInt(payload['userId']),
-      );
+      const userExists = await this.usersService.checkIfUserExists({
+        id: parseInt(payload['userId']),
+      });
       if (!userExists) {
         throw new ResultType(
           HttpStatus.UNAUTHORIZED,
