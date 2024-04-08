@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 
 import { UsersService } from '../users/users.service';
 import { SigninDto } from './dto/signin.dto';
@@ -23,7 +23,7 @@ export class AuthService {
       user?.password ?? '',
     );
     if (!user?.password || !passwordValidation) {
-      throw new ResultType(401, [], 'Unauthorized');
+      throw new ResultType(HttpStatus.UNAUTHORIZED, [], 'Unauthorized');
     }
 
     const payload = { userId: user.id, role: user.role };
@@ -36,6 +36,14 @@ export class AuthService {
 
   async signup(signupDto: SignupDto): Promise<AuthResultDto> {
     const { email, password, name } = signupDto;
+    const userExists = await this.usersService.checkIfUserExists({ email });
+    if (userExists) {
+      throw new ResultType(
+        HttpStatus.BAD_REQUEST,
+        ['User already exists'],
+        'Bad Request',
+      );
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await this.usersService.create({
       email,
