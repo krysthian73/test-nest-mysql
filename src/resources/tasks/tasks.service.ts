@@ -12,9 +12,9 @@ export class TasksService {
   constructor(private readonly tasksRepository: TasksRepository) {}
 
   async create(createTaskDto: CreateTaskDto, userId: number): Promise<Task> {
-    return this.tasksRepository.create({
+    return this.tasksRepository.save({
       ...createTaskDto,
-      userId,
+      ...{ userId },
     });
   }
 

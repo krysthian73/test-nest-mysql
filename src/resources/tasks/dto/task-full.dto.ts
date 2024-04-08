@@ -7,9 +7,11 @@ import {
   IsNumber,
 } from 'class-validator';
 import { TaskStatus } from '../types';
+import { EntityDto } from 'src/resources/types';
 
-export class TaskFullDto {
+export class TaskFullDto extends EntityDto {
   constructor(partial: Partial<TaskFullDto>) {
+    super();
     Object.assign(this, partial);
   }
 
