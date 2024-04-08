@@ -16,9 +16,9 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskFullDto } from './dto/task-full.dto';
+import { AuthOwnerAdminGuard } from '../auth-owner-admin.guard';
 import { AuthGuard } from '../auth.guard';
 import { ResultType } from '../types';
-import { request } from 'http';
 
 @ApiTags('tasks')
 @Controller('api/v1/tasks')
@@ -177,5 +177,29 @@ export class TasksController {
       request['role'],
     );
     return new ResultType(HttpStatus.OK, [], 'Task deleted successfully');
+  }
+
+  @Get('user/:userId')
+  @UseGuards(AuthOwnerAdminGuard)
+  @ApiBearerAuth()
+  @ApiResponse({
+    description: 'User tasks found successfully',
+    status: HttpStatus.OK,
+    type: ResultType<TaskFullDto[]>,
+  })
+  @ApiResponse({
+    description: 'Unauthorized',
+    status: HttpStatus.UNAUTHORIZED,
+    type: ResultType,
+  })
+  @HttpCode(HttpStatus.OK)
+  async findAllTasks(
+    @Param('userId') userId: string,
+  ): Promise<ResultType<TaskFullDto[]>> {
+    const tasks = await this.tasksService.findAll({ userId: +userId });
+    const tasksFullDto: TaskFullDto[] = tasks.map(
+      (task) => new TaskFullDto(task),
+    );
+    return new ResultType<TaskFullDto[]>(HttpStatus.OK, [], '', tasksFullDto);
   }
 }

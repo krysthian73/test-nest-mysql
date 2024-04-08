@@ -15,15 +15,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserFullDto } from './dto/user-full.dto';
 import { AuthOwnerAdminGuard } from '../auth-owner-admin.guard';
 import { ResultType } from '../types';
-import { TaskFullDto } from '../tasks/dto/task-full.dto';
-import { TasksService } from '../tasks/tasks.service';
 
 @ApiTags('users')
 @Controller('api/v1/users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly tasksService: TasksService,
   ) {}
 
   @Get()
@@ -132,29 +129,5 @@ export class UsersController {
   async remove(@Param('id') id: string): Promise<ResultType<null>> {
     await this.usersService.remove(+id);
     return new ResultType(HttpStatus.OK, [], 'User deleted successfully');
-  }
-
-  @Get(':id/tasks')
-  @UseGuards(AuthOwnerAdminGuard)
-  @ApiBearerAuth()
-  @ApiResponse({
-    description: 'User tasks found successfully',
-    status: HttpStatus.OK,
-    type: ResultType<TaskFullDto[]>,
-  })
-  @ApiResponse({
-    description: 'Unauthorized',
-    status: HttpStatus.UNAUTHORIZED,
-    type: ResultType,
-  })
-  @HttpCode(HttpStatus.OK)
-  async findAllTasks(
-    @Param('id') id: string,
-  ): Promise<ResultType<TaskFullDto[]>> {
-    const tasks = await this.tasksService.findAll({ userId: +id });
-    const tasksFullDto: TaskFullDto[] = tasks.map(
-      (task) => new TaskFullDto(task),
-    );
-    return new ResultType<TaskFullDto[]>(HttpStatus.OK, [], '', tasksFullDto);
   }
 }
