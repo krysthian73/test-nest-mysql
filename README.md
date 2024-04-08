@@ -13,7 +13,7 @@ Antes de iniciar, certifique-se de ter os seguintes pré-requisitos instalados:
 1. Execute o seguinte comando para baixar a imagem do MySQL: 
 `docker pull mysql`
 
-2. Execute o container do MySQL com os seguintes comandos:
+2. Execute o container do MySQL com o seguinte comando:
 `docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 -d mysql`
 
 3. Acesse o console do MySQL com o seguinte comando:
@@ -60,7 +60,7 @@ THROTTLE_TTL_LONG=86400
 1. Para iniciar o servidor de desenvolvimento, execute o seguinte comando:
 `npm run start:dev`
 
-O servidor estará disponível em [http://localhost:3000](http://localhost:3000).
+- O servidor estará disponível em [http://localhost:3000](http://localhost:3000).
 
 ## Testes de Unidade
 
