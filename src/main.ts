@@ -8,7 +8,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('API docs')
-    .setDescription('The API description')
+    .setDescription('Esta é uma documentação do projeto de Tarefas com NestJS')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
