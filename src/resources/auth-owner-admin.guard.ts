@@ -36,18 +36,20 @@ export class AuthOwnerAdminGuard implements CanActivate {
       const userExists = await this.usersService.checkIfUserExists({
         id: parseInt(payload['userId']),
       });
+      let hasValidUserId =
+        +request.params.id === +payload['userId'] && !!request.params.id;
+      hasValidUserId =
+        hasValidUserId ||
+        (+request.params.userId === +payload['userId'] &&
+          !!request.params.userId);
+
       if (!userExists) {
         throw new ResultType(
           HttpStatus.UNAUTHORIZED,
           ['User not found'],
           'Unauthorized',
         );
-      } else if (
-        payload['role'] !== Role.Admin &&
-        ((+request.params.id !== +payload['userId'] && !!request.params.id) ||
-          (+request.params.userId !== +payload['userId'] &&
-            !!request.params.userId))
-      ) {
+      } else if (payload['role'] !== Role.Admin && !hasValidUserId) {
         throw new ResultType(
           HttpStatus.UNAUTHORIZED,
           ['User is not an admin or is not changing his own data'],
