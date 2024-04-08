@@ -7,6 +7,7 @@ import { SigninDto } from './dto/signin.dto';
 import { AuthResultDto } from './dto/auth-result.dto';
 import { SignupDto } from './dto/signup-dto';
 import { ResultType } from '../types';
+import { Role } from '../users/types';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +36,7 @@ export class AuthService {
   }
 
   async signup(signupDto: SignupDto): Promise<AuthResultDto> {
-    const { email, password, name } = signupDto;
+    const { email, password, name, role } = signupDto;
     const userExists = await this.usersService.checkIfUserExists({ email });
     if (userExists) {
       throw new ResultType(
@@ -49,6 +50,7 @@ export class AuthService {
       email,
       password: hashedPassword,
       name,
+      role: role ?? Role.User,
     });
 
     const payload = { userId: user.id, role: user.role };
