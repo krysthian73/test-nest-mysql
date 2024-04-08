@@ -6,7 +6,6 @@ import { SigninDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup-dto';
 import { AuthResultDto } from './dto/auth-result.dto';
 import * as bcrypt from 'bcrypt';
-import { UnauthorizedException } from '@nestjs/common';
 
 class UsersServiceMock {
   async findOne(query): Promise<any> {
