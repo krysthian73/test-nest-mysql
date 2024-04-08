@@ -1,8 +1,9 @@
 export enum TaskStatus {
-  PENDING = 'pending',
-  COMPLETED = 'completed',
+  Pending = 'pending',
+  Completed = 'completed',
 }
 
 export interface TaskFilter {
   status?: TaskStatus;
+  userId?: number;
 }
